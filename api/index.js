@@ -30,15 +30,16 @@ app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 
 
-app.use(cors()); 
-// app.options('*', cors());
-// app.use(
-//     cors({
-//       origin: 'https://kajeme-portfolio.vercel.app',
-//       methods: ['GET', 'POST'],
-//       allowedHeaders: ['Content-Type', 'Authorization'], // Add custom headers here
-//     })
-//   );
+// app.use(cors()); 
+
+app.use(
+    cors({
+      origin: 'https://kajeme-portfolio.vercel.app',
+      methods: ['GET', 'POST'],
+      allowedHeaders: ['Content-Type', 'Authorization'], // Add custom headers here
+    })
+  );
+
 app.use(express.json());
 
 
