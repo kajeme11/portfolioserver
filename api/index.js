@@ -54,6 +54,7 @@ router.get("/", (req, res) => {
     res.send('Content security policy set!');
 });
 router.post("/contact", (req, res) => {
+    res.setHeader('Access-Control-Allow-Methods', 'POST'); 
     const name = req.body.firstName + req.body.lastName;
     const email = req.body.email;
     const message = req.body.message;
