@@ -10,7 +10,7 @@ app.get('/favicon.ico', (req, res) => res.status(204).end());
 app.use((req, res, next) => {
     res.setHeader(
         "Content-Security-Policy",
-        "default-src 'self'; connect-src 'self' https://kajeme-portfolio.vercel.app/#contact; script-src 'self'; style-src 'self';"
+        "default-src 'self'; connect-src 'self' https://kajeme-portfolio.vercel.app; script-src 'self'; style-src 'self';"
     );
     next();
 });
@@ -20,9 +20,9 @@ app.use((req, res, next) => {
 // app.use(cors());
 app.use(
     cors({
-      origin: 'https://kajeme-portfolio.vercel.app/#contact',
+      origin: 'https://kajeme-portfolio.vercel.app',
       methods: ['GET', 'POST'],
-      allowedHeaders: ['Content-Type', 'Authorization'], // Add custom headers here
+      allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'], // Add custom headers here
     })
   );
 app.use(express.json());
