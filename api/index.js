@@ -10,7 +10,7 @@ app.get('/favicon.ico', (req, res) => res.status(204).end());
 app.use((req, res, next) => {
     res.setHeader(
         "Content-Security-Policy",
-        "default-src 'self'; connect-src 'self' https://api.example.com; script-src 'self'; style-src 'self';"
+        "default-src 'self'; connect-src 'self' https://kajeme-portfolio.vercel.app/#contact; script-src 'self'; style-src 'self';"
     );
     next();
 });
