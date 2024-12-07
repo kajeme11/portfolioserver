@@ -6,14 +6,26 @@ require('dotenv').config();
 
 const port = process.env.PORT || 3000;
 const app = express();
+app.use(helmet());
+
+app.use(
+    helmet.contentSecurityPolicy({
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'", "https://vercel.live/"],
+        connectSrc: ["'self'", "https://kajeme-portfolio.vercel.app"],
+      },
+    })
+  );
+
 app.get('/favicon.ico', (req, res) => res.status(204).end());
-app.use((req, res, next) => {
-    res.setHeader(
-        "Content-Security-Policy",
-        "default-src 'self'; connect-src 'self' https://kajeme-portfolio.vercel.app; script-src 'self' https://vercel.live; style-src 'self'; frame-ancestors 'self' https://vercel.live"
-    );
-    next();
-});
+// app.use((req, res, next) => {
+//     res.setHeader(
+//         "Content-Security-Policy",
+//         "default-src 'self'; connect-src 'self' https://kajeme-portfolio.vercel.app; script-src 'self' https://vercel.live; style-src 'self'; frame-ancestors 'self' https://vercel.live;"
+//     );
+//     next();
+// });
 
 
 
