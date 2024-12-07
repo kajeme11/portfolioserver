@@ -22,7 +22,7 @@ app.use(
     cors({
       origin: 'https://kajeme-portfolio.vercel.app',
       methods: ['GET', 'POST'],
-      allowedHeaders: ['Content-Type', 'Authorization', 'Access-Control-Allow-Origin'], // Add custom headers here
+      allowedHeaders: ['Content-Type', 'Authorization'], // Add custom headers here
     })
   );
 app.use(express.json());
