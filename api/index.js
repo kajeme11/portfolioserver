@@ -6,10 +6,11 @@ require('dotenv').config();
 
 const port = process.env.PORT || 3000;
 const app = express();
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 app.use((req, res, next) => {
     res.setHeader(
         "Content-Security-Policy",
-        "default-src 'self'; script-src 'self' https://kajeme-portfolio-glfj035wk-kajeme11s-projects.vercel.app/*;"
+        "default-src 'self'; connect-src 'self' https://api.example.com; script-src 'self'; style-src 'self';"
     );
     next();
 });
