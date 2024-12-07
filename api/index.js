@@ -6,8 +6,20 @@ require('dotenv').config();
 
 const port = process.env.PORT || 3000;
 const app = express();
+app.use((req, res, next) => {
+    res.setHeader(
+        "Content-Security-Policy",
+        "default-src 'self'; script-src 'self' https://kajeme-portfolio-glfj035wk-kajeme11s-projects.vercel.app/*;"
+    );
+    next();
+});
+
+
+
 app.use(cors());
 app.use(express.json());
+
+
 app.use("/", router);
 app.listen(port, () => console.log("Server Running"));
 
@@ -20,6 +32,7 @@ const contactEmail = nodemailer.createTransport({
     }
 });
 
+
 contactEmail.verify((error) => {
     if(error){
         console.log(error);
@@ -28,6 +41,10 @@ contactEmail.verify((error) => {
     }
 });
 
+
+router.get("/", (req, res) => {
+    res.send('Content security policy set!');
+});
 router.post("/contact", (req, res) => {
     const name = req.body.firstName + req.body.lastName;
     const email = req.body.email;
