@@ -31,6 +31,7 @@ app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 
 app.use(cors()); 
+app.options('*', cors());
 // app.use(
 //     cors({
 //       origin: 'https://kajeme-portfolio.vercel.app',
