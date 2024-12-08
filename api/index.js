@@ -68,6 +68,7 @@ router.get("/", (req, res) => {
 });
 router.post("/contact", (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'POST'); 
+    res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
     const name = req.body.firstName + req.body.lastName;
     const email = req.body.email;
     const message = req.body.message;
