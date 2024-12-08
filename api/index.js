@@ -5,8 +5,6 @@ const nodemailer = require("nodemailer");
 const helmet = require("helmet");
 require('dotenv').config();
 
-
-app.use(cors()); 
 // app.use(
 //     cors({
 //       origin: 'https://kajeme-portfolio.vercel.app',
@@ -17,6 +15,8 @@ app.use(cors());
 
 const port = process.env.PORT || 3000;
 const app = express();
+
+app.use(cors()); 
 app.use(helmet());
 
 app.use(
