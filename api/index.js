@@ -31,7 +31,7 @@ app.use(express.json());
     origin: (origin, callback) => {
       const allowedOrigins = [
         'https://kajeme-portfolio.vercel.app',
-        'http://localhost:3002/'
+        'http://localhost:3002'
       ];
   
       if (!origin || allowedOrigins.includes(origin)) {
@@ -91,9 +91,11 @@ contactEmail.verify((error) => {
 
 
 router.get("/", (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
     res.send('Content security policy set!');
 });
 router.post("/contact", (req, res) => {
+    res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Methods', 'POST'); 
     res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
     const authHeader = req.headers['authorization']; 
