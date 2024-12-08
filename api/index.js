@@ -5,13 +5,15 @@ const nodemailer = require("nodemailer");
 const helmet = require("helmet");
 require('dotenv').config();
 
-app.use(
-    cors({
-      origin: 'https://kajeme-portfolio.vercel.app',
-      methods: ['GET', 'POST'],
-      allowedHeaders: ['Content-Type'], // Add custom headers here
-    })
-  );
+
+app.use(cors()); 
+// app.use(
+//     cors({
+//       origin: 'https://kajeme-portfolio.vercel.app',
+//       methods: ['GET', 'POST'],
+//       allowedHeaders: ['Content-Type'], // Add custom headers here
+//     })
+//   );
 
 const port = process.env.PORT || 3000;
 const app = express();
@@ -35,11 +37,6 @@ app.get('/favicon.ico', (req, res) => res.status(204).end());
 //     );
 //     next();
 // });
-
-
-
-// app.use(cors()); 
-
 
 app.use(express.json());
 
