@@ -9,7 +9,13 @@ const port = process.env.PORT || 3002;
 const app = express();
 app.use(express.json());
 
-app.use(cors({ origin: '*' })); 
+// app.use(cors({ origin: '*' })); 
+const corsOptions = {
+    origin: '*', 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Authorization', 'Content-Type']
+  };
+  app.use(cors(corsOptions));
 app.use(express.json());
 
 app.use((req, res, next) => {
@@ -38,22 +44,6 @@ app.use((req, res, next) => {
 //     res.status(200).end();
 //   });
   
-//   app.use(cors({
-//     origin: (origin, callback) => {
-//       const allowedOrigins = [
-//         'https://kajeme-portfolio.vercel.app',
-//         'http://localhost:3002'
-//       ];
-  
-//       if (!origin || allowedOrigins.includes(origin)) {
-//         callback(null, true);
-//       } else {
-//         callback(null, 'https://default-allowed-origin.com'); 
-//       }
-//     },
-//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-//     credentials: true
-//   }));
 
 app.use(helmet());
 
