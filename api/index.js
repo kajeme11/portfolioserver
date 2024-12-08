@@ -20,7 +20,7 @@ app.use(express.json());
 
 app.use((req, res, next) => {
     const authHeader = req.headers['authorization'];
-    console.log(authHeader);
+    console.log("Authorization Header " + authHeader);
     if (!authHeader || authHeader !== `Bearer ${process.env.API_TOKEN}`) {
       return res.status(401).json({ error: 'Unauthorized' });
     }
