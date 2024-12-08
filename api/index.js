@@ -20,12 +20,30 @@ app.use(express.json());
 //     })
 //   );
 
-app.options('*', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
-    res.status(200).end();
-  });
+// app.options('*', (req, res) => {
+//     res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
+//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
+//     res.status(200).end();
+//   });
+const allowedOrigins = [
+    'https://kajeme-portfolio.vercel.app',
+    'http://localhost:3002/'
+  ];
+  
+  app.use(cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
+    credentials: true 
+  }));
+  
 
 app.use(helmet());
 
@@ -35,7 +53,7 @@ app.use(
       directives: {
         defaultSrc: ["'self'"],
         scriptSrc: ["'self'", "https://vercel.live/"],
-        connectSrc: ["'self'", "https://kajeme-portfolio.vercel.app"],
+        connectSrc: ["'self'", "https://kajeme-portfolio.vercel.app", "http://localhost:3002"],
       },
     })
   );
