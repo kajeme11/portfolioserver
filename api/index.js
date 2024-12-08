@@ -11,6 +11,14 @@ app.use(express.json());
 
 app.use(cors({ origin: '*' })); 
 app.use(express.json());
+
+app.use((req, res, next) => {
+    const authHeader = req.headers['authorization'];
+    if (!authHeader || authHeader !== `Bearer ${process.env.API_TOKEN}`) {
+      return res.status(401).json({ error: 'Unauthorized' });
+    }
+    next();
+  });
 // app.use(cors()); 
 
 // app.use(
@@ -100,33 +108,26 @@ router.post("/contact", (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Methods', 'POST'); 
     res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
-    const authHeader = req.headers['authorization']; 
-    const token = authHeader && authHeader.split(' ')[1]; 
-
-    if (token === process.env.AUTH_TOKEN) {
-        const name = req.body.firstName + req.body.lastName;
-        const email = req.body.email;
-        const message = req.body.message;
-        const phone = req.body.phone;
-        const mail = {
-            from: name,
-            to: process.env.EMAIL_USER,
-            subject: "Contact Submission - Portfolio",
-            html: `<p>Name: ${name}</p>
+    const name = req.body.firstName + req.body.lastName;
+    const email = req.body.email;
+    const message = req.body.message;
+    const phone = req.body.phone;
+    const mail = {
+        from: name,
+        to: process.env.EMAIL_USER,
+        subject: "Contact Submission - Portfolio",
+        html: `<p>Name: ${name}</p>
                 <p>Email: ${email}</p>
                 <p>Phone: ${phone}</p>
                 <p>Message: ${message}</p>`
         };
-        contactEmail.sendMail(mail, (error) => {
-        if(error){
-            res.json(error);
-        }else{
-            res.json({ code: 200, status: "Message Sent"})
-        }
-        });
+    contactEmail.sendMail(mail, (error) => {
+    if(error){
+        res.json(error);
     }else{
-        res.status(403).json({ error: 'Unauthorized' });
+        res.json({ code: 200, status: "Message Sent"})
     }
+  });
 });
 
 app.listen(port, () => console.log("Server Running"));
