@@ -5,26 +5,30 @@ const nodemailer = require("nodemailer");
 const helmet = require("helmet");
 require('dotenv').config();
 
+const port = process.env.PORT || 3000;
+const app = express();
+app.use(express.json());
+
+// app.use(cors()); 
+
 // app.use(
 //     cors({
 //       origin: 'https://kajeme-portfolio.vercel.app',
 //       methods: ['GET', 'POST'],
-//       allowedHeaders: ['Content-Type'], // Add custom headers here
+//       allowedHeaders: ['Content-Type'],
+//       credentials: false
 //     })
 //   );
-
-const port = process.env.PORT || 3000;
-const app = express();
-
-app.use(cors()); 
-app.use(helmet());
 
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     res.status(200).end();
   });
+
+app.use(helmet());
+
 
 app.use(
     helmet.contentSecurityPolicy({
@@ -45,11 +49,10 @@ app.get('/favicon.ico', (req, res) => res.status(204).end());
 //     next();
 // });
 
-app.use(express.json());
 
 
 app.use("/", router);
-app.listen(port, () => console.log("Server Running"));
+
 
 const contactEmail = nodemailer.createTransport({
     
@@ -98,3 +101,4 @@ router.post("/contact", (req, res) => {
     });
 });
 
+app.listen(port, () => console.log("Server Running"));
