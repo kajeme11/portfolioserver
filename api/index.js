@@ -26,24 +26,23 @@ app.use(express.json());
 //     res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
 //     res.status(200).end();
 //   });
-const allowedOrigins = [
-    'https://kajeme-portfolio.vercel.app',
-    'http://localhost:3002/'
-  ];
   
   app.use(cors({
     origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
-      if (allowedOrigins.includes(origin)) {
+      const allowedOrigins = [
+        'https://kajeme-portfolio.vercel.app',
+        'http://localhost:3002/'
+      ];
+  
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        callback(null, 'https://default-allowed-origin.com'); 
       }
     },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], 
-    credentials: true 
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true
   }));
-  
 
 app.use(helmet());
 
