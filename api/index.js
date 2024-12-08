@@ -23,7 +23,7 @@ app.use(express.json());
 app.options('*', (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
     res.status(200).end();
   });
 
@@ -79,26 +79,33 @@ router.get("/", (req, res) => {
 router.post("/contact", (req, res) => {
     res.setHeader('Access-Control-Allow-Methods', 'POST'); 
     res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
-    const name = req.body.firstName + req.body.lastName;
-    const email = req.body.email;
-    const message = req.body.message;
-    const phone = req.body.phone;
-    const mail = {
-        from: name,
-        to: process.env.EMAIL_USER,
-        subject: "Contact Submission - Portfolio",
-        html: `<p>Name: ${name}</p>
-               <p>Email: ${email}</p>
-               <p>Phone: ${phone}</p>
-               <p>Message: ${message}</p>`
-    };
-    contactEmail.sendMail(mail, (error) => {
-       if(error){
-           res.json(error);
-       }else{
-           res.json({ code: 200, status: "Message Sent"})
-       }
-    });
+    const authHeader = req.headers['authorization']; 
+    const token = authHeader && authHeader.split(' ')[1]; 
+
+    if (token === process.env.AUTH_TOKEN) {
+        const name = req.body.firstName + req.body.lastName;
+        const email = req.body.email;
+        const message = req.body.message;
+        const phone = req.body.phone;
+        const mail = {
+            from: name,
+            to: process.env.EMAIL_USER,
+            subject: "Contact Submission - Portfolio",
+            html: `<p>Name: ${name}</p>
+                <p>Email: ${email}</p>
+                <p>Phone: ${phone}</p>
+                <p>Message: ${message}</p>`
+        };
+        contactEmail.sendMail(mail, (error) => {
+        if(error){
+            res.json(error);
+        }else{
+            res.json({ code: 200, status: "Message Sent"})
+        }
+        });
+    }else{
+        res.status(403).json({ error: 'Unauthorized' });
+    }
 });
 
 app.listen(port, () => console.log("Server Running"));
