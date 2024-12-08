@@ -5,10 +5,12 @@ const nodemailer = require("nodemailer");
 const helmet = require("helmet");
 require('dotenv').config();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 3002;
 const app = express();
 app.use(express.json());
 
+app.use(cors({ origin: '*' })); 
+app.use(express.json());
 // app.use(cors()); 
 
 // app.use(
@@ -27,22 +29,22 @@ app.use(express.json());
 //     res.status(200).end();
 //   });
   
-  app.use(cors({
-    origin: (origin, callback) => {
-      const allowedOrigins = [
-        'https://kajeme-portfolio.vercel.app',
-        'http://localhost:3002'
-      ];
+//   app.use(cors({
+//     origin: (origin, callback) => {
+//       const allowedOrigins = [
+//         'https://kajeme-portfolio.vercel.app',
+//         'http://localhost:3002'
+//       ];
   
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(null, 'https://default-allowed-origin.com'); 
-      }
-    },
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    credentials: true
-  }));
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(null, 'https://default-allowed-origin.com'); 
+//       }
+//     },
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     credentials: true
+//   }));
 
 app.use(helmet());
 
