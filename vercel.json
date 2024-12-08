@@ -2,13 +2,13 @@
     "version": 2,
     "builds": [
         {
-            "src": "api/*.js",
+            "src": "api/index.js",
             "use": "@vercel/node"
         }
     ],
     "headers": [
         {
-            "source": "/api/(.*)",
+            "source": "/api/index.js",
             "headers": [
                 { "key": "Access-Control-Allow-Origin", "value": "*" },
                 { "key": "Access-Control-Allow-Methods", "value": "GET, POST, PUT, DELETE, PATCH, OPTIONS" }
