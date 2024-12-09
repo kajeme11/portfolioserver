@@ -94,8 +94,10 @@ router.post("/contact", (req, res) => {
         };
     contactEmail.sendMail(mail, (error) => {
     if(error){
+        console.log('Post /contact Error');
         res.json(error);
     }else{
+        console.log('Post /contact Success');
         res.json({ code: 200, status: "Message Sent"})
     }
   });
