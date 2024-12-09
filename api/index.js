@@ -77,7 +77,7 @@ router.post("/contact", (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Methods', 'POST'); 
     // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3004');
-    res.setHeader('Access-Control-Allow-Origin', 'http://kajeme-portfolio.vercel.app');
+    res.setHeader('Access-Control-Allow-Origin', process.env.PORTFOLIO_URL);
     
     const name = req.body.firstName + req.body.lastName;
     const email = req.body.email;
