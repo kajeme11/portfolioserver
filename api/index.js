@@ -5,49 +5,23 @@ const nodemailer = require("nodemailer");
 const helmet = require("helmet");
 require('dotenv').config();
 
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 3003;
 const app = express();
+app.use(cors({ origin: '*' })); 
 app.use(express.json());
 
-// app.use(cors({ origin: '*' })); 
-const corsOptions = {
-    origin: '*', 
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Authorization', 'Content-Type']
-  };
-  app.use(cors(corsOptions));
-app.use(express.json());
 
-app.use((req, res, next) => {
-    const authHeader = req.headers['authorization'];
-    console.log("Authorization Header " + authHeader);
-    if (!authHeader || authHeader !== `Bearer ${process.env.API_TOKEN}`) {
-      return res.status(401).json({ error: 'Unauthorized' });
-    }
-    next();
-  });
+// const corsOptions = {
+//     origin: 'http://localhost:3002/#contact', 
+//     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+//     allowedHeaders: ['authorization', 'content-type']
+//   };
+// app.use(cors(corsOptions));
+
 // app.use(cors()); 
 
-// app.use(
-//     cors({
-//       origin: 'https://kajeme-portfolio.vercel.app',
-//       methods: ['GET', 'POST'],
-//       allowedHeaders: ['Content-Type'],
-//       credentials: false
-//     })
-//   );
-
-// app.options('*', (req, res) => {
-//     res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
-//     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-//     res.setHeader('Access-Control-Allow-Headers', 'Content-Type', 'Authorization');
-//     res.status(200).end();
-//   });
-  
 
 app.use(helmet());
-
-
 app.use(
     helmet.contentSecurityPolicy({
       directives: {
@@ -59,19 +33,17 @@ app.use(
   );
 
 app.get('/favicon.ico', (req, res) => res.status(204).end());
-// app.use((req, res, next) => {
-//     res.setHeader(
-//         "Content-Security-Policy",
-//         "default-src 'self'; connect-src 'self' https://kajeme-portfolio.vercel.app; script-src 'self' https://vercel.live; style-src 'self'; frame-ancestors 'self' https://vercel.live;"
-//     );
-//     next();
-// });
+app.use((req, res, next) => {
+    res.setHeader(
+        "Content-Security-Policy",
+        "default-src 'self'; connect-src 'self' https://kajeme-portfolio.vercel.app; script-src 'self' https://vercel.live; style-src 'self'; frame-ancestors 'self' https://vercel.live;"
+    );
+    next();
+});
 
 
 
 app.use("/", router);
-
-
 const contactEmail = nodemailer.createTransport({
     
     service: 'gmail',
@@ -94,11 +66,17 @@ contactEmail.verify((error) => {
 router.get("/", (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.send('Content security policy set!');
+    // console.log(req);
 });
 router.post("/contact", (req, res) => {
+    console.log("Contact POST REQ");
+    // console.log("AUTH HEADERS: " + req.headers['authorization']);
+    // console.log("AUTH HEADERS: " + req.headers['content-type']);
+
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Methods', 'POST'); 
-    res.setHeader('Access-Control-Allow-Origin', 'https://kajeme-portfolio.vercel.app');
+    res.setHeader('Access-Control-Allow-Origin', 'http://kajeme-portfolio.vercel.app');
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
     const name = req.body.firstName + req.body.lastName;
     const email = req.body.email;
     const message = req.body.message;
