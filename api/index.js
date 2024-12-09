@@ -44,8 +44,7 @@ app.use((req, res, next) => {
 
 
 app.use("/", router);
-const contactEmail = nodemailer.createTransport({
-    
+const contactEmail = nodemailer.createTransport({    
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
@@ -65,18 +64,21 @@ contactEmail.verify((error) => {
 
 router.get("/", (req, res) => {
     res.setHeader('Content-Type', 'application/json');
-    res.send('Content security policy set!');
+    // res.send('Content security policy set!');
+    // res.json({"": ""});
+    res.json({ code: 200, status: "Portfolio Server Running"})
     // console.log(req);
 });
 router.post("/contact", (req, res) => {
-    console.log("Contact POST REQ");
-    // console.log("AUTH HEADERS: " + req.headers['authorization']);
-    // console.log("AUTH HEADERS: " + req.headers['content-type']);
+    console.log("POST REQ");
+    console.log("AUTH HEADERS: " + req.headers['authorization']);
+    console.log("AUTH HEADERS: " + req.headers['content-type']);
 
     res.setHeader('Content-Type', 'application/json');
     res.setHeader('Access-Control-Allow-Methods', 'POST'); 
+    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3004');
     res.setHeader('Access-Control-Allow-Origin', 'http://kajeme-portfolio.vercel.app');
-    // res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
+    
     const name = req.body.firstName + req.body.lastName;
     const email = req.body.email;
     const message = req.body.message;
